@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Factor Analysis Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: url("{% static 'myapp/images/pah.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            border-radius: 5px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #dddddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .inference {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Factor Analysis Results</h1>
+    {% if has_results %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    {% for factor in factor_analysis_results.columns %}
+                        <th>Factor {{ forloop.counter }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for variable, loadings in factor_analysis_results.iterrows %}
+                    <tr>
+                        <td>{{ variable }}</td>
+                        {% for loading in loadings %}
+                            <td>{{ loading|floatformat:"%.2f" }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="inference">
+            <h2>Inference</h2>
+            <p>
+                The factor analysis results indicate the relationships between variables (years) and underlying factors.
+                Factor 1 appears to have high loadings (close to 1) across all years, suggesting a dominant trend or commonality
+                that influences these variables consistently over time. Factors 2 and 3 show no significant loadings for the
+                variables in this analysis, indicating they may not explain much variance in the dataset.
+            </p>
+            <p>
+                Factor analysis helps in identifying patterns and underlying structures within data, making it useful for
+                understanding complex relationships and reducing the dimensionality of datasets.
+            </p>
+        </div>
+    {% else %}
+        <p>No results to display.</p>
+    {% endif %}
+</body>
+</html>

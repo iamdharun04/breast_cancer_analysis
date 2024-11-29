@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Regression Analysis - Breast Cancer Analysis Project</title>
+    <style>
+        body, html {
+            height: 100%; /* Full height to ensure centering works over the entire page */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            font-family: 'Arial', sans-serif;
+            display: flex; /* Enables the use of flexbox */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Vertically center content */
+            align-items: center; /* Horizontally center content for flex children */
+            background-color: #f4f4f4; /* Light grey background for better contrast */
+            font-size: 20px;
+            background: url("{% static 'myapp/images/paz.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+        }
+
+        form, h1, h2, p {
+            width: 80%; /* Maintain width but allow centering via text-align and flexbox */
+            margin-bottom: 20px; /* Space between elements */
+            margin-left: -15%; /* Shift everything significantly to the left */
+        }
+
+        select, button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top: 10px; /* Space above the form elements */
+        }
+
+        button {
+            cursor: pointer; /* Indicates that the button is clickable */
+            background-color: #007BFF; /* Bootstrap primary blue */
+            color: white; /* Text color */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        img {
+            max-width: 100%; /* Ensures the image is responsive and doesn't overflow */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        ul {
+            list-style-type: none; /* Remove bullets from list */
+            padding: 0; /* Remove padding */
+        }
+
+        li {
+            margin: 5px 0; /* <Sp></Sp>ace between list items */
+        }
+    </style>
+</head>
+<body>
+    <h1>Regression Analysis for Breast Cancer Data</h1>
+    <p>Enter a state or union territory to predict future values based on historical data.</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="state">Select State/UT:</label>
+        <select name="state" id="state">
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Predict</button>
+    </form>
+    {% if predictions %}
+        <h2>Predictions for {{ state }}</h2>
+        <ul>
+            {% for value in predictions %}
+                <li>{{ value }}</li>
+            {% endfor %}
+        </ul>
+        <img src="data:image/png;base64,{{ graph }}" alt="Regression Graph">
+    {% endif %}
+</body>
+</html>

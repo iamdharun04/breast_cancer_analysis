@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PCA Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: url("{% static 'myapp/images/par.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+            color: black; /* Set text color to black */
+            text-align: center; /* Center align text */
+        }
+        .plot-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center items vertically */
+        }
+        .plot {
+            max-width: 100%; /* Ensure the image does not exceed its container */
+            border-radius: 10px; /* Optional: Add border radius for aesthetic */
+            margin-left: auto; /* Move the plot to the right */
+            margin-right: 20px; /* Add margin to separate plot from variance */
+        }
+        .variance {
+            max-width: 300px; /* Adjust max width as needed */
+            background: none; /* Remove background overlay */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left; /* Align text to left within the variance container */
+            margin-top: 20px;
+        }
+        .variance h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: black; /* Set heading color to black */
+        }
+        .variance ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .variance li {
+            margin-bottom: 10px;
+            color: black; /* Set list item color to black */
+        }
+        .analysis {
+            margin-top: 30px;
+            max-width: 600px; /* Adjust max width as needed */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.8); /* Light background */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .analysis p {
+            color: black; /* Set text color to black */
+            line-height: 1.6; /* Increase line height for readability */
+        }
+    </style>
+</head>
+<body>
+    <h1>PCA Results</h1>
+    <div class="plot-container">
+        {% if has_variance %}
+            <div class="plot">
+                <img src="data:image/png;base64,{{ graph }}" alt="PCA Scatter Plot">
+            </div>
+            <div class="variance">
+                <h2>Variance Explained</h2>
+                <ul>
+                    <li>Principal Component 1: <span style="color:black;">{{ explained_variance.0|floatformat:"%.2f" }}</span> - This component explains {{ explained_variance.0|floatformat:"%.2f" }}% of the total variance in the dataset. It captures the primary pattern or trend among the states/UTs.</li>
+                    <li>Principal Component 2: <span style="color:black;">{{ explained_variance.1|floatformat:"%.2f" }}</span> - This component explains {{ explained_variance.1|floatformat:"%.2f" }}% of the total variance. It captures additional, but much smaller, variations beyond what PC1 explains.</li>
+                </ul>
+            </div>
+        {% else %}
+            <p>No variance explained data available.</p>
+        {% endif %}
+    </div>
+
+    <div class="analysis">
+        <h2>What is PCA?</h2>
+        <p>Principal Component Analysis (PCA) is a technique used to reduce the dimensionality of complex datasets while retaining as much information as possible about the variability present in the data. It identifies patterns of variation among the states/UTs based on the available variables.</p>
+        <h2>Analysis of the Dataset</h2>
+        <p>From the PCA results:</p>
+        <ul>
+            <li><strong>Principal Component 1 (PC1):</strong> This component explains 99.98% of the variance, indicating a dominant trend or pattern across the years in the dataset. This could suggest a consistent increase or decrease in cases across states/UTs over time.</li>
+            <li><strong>Principal Component 2 (PC2):</strong> Explains 0.02% of the variance, capturing minimal additional information. This might represent minor deviations or specific yearly fluctuations that are not captured by PC1.</li>
+        </ul>
+        <p>To gain more insights:</p>
+        <ul>
+            <li>Examine the loadings of each variable (year) on PC1 and PC2 to understand their contributions to these components.</li>
+            <li>Perform correlation analysis between variables like population size and number of cases to explore potential relationships.</li>
+            <li>Consider regression analysis to model the relationship between population size and cases, if that is of interest.</li>
+        </ul>
+    </div>
+</body>
+</html>

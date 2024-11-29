@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clustering Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: url("{% static 'myapp/images/pal.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+        }
+        .plot {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        .cluster-description {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clustering Results</h1>
+
+    <h2>Non-Hierarchical Clustering (K-means)</h2>
+    <ul>
+        {% for state, label in states_clusters %}
+        <li>{{ state }}: Cluster {{ label }} - {{ cluster_descriptions.means.get.label }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Plot for Cluster Distribution -->
+    <div class="plot">
+        <img src="data:image/png;base64,{{ cluster_distribution_graph }}" alt="Cluster Distribution">
+    </div>
+
+    <!-- Explanation of clusters -->
+    <div class="cluster-description">
+        <h3>Cluster Details:</h3>
+        <p>Cluster 0: {{ cluster_descriptions.0 }}</p>
+        <p>Cluster 1: {{ cluster_descriptions.1 }}</p>
+        <p>Cluster 2: {{ cluster_descriptions.2 }}</p>
+    </div>
+</body>
+</html>

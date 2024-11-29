@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi-square Test Results</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Raleway:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: url("{% static 'myapp/images/paq.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Ensure full height */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add text shadow for readability */
+        }
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .result, .explanation {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        .explanation {
+            font-size: 18px;
+        }
+        .explanation h2 {
+            font-family: 'Raleway', sans-serif;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .explanation p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chi-square Test Results</h1>
+    <div class="result">
+        <p>Chi-square Statistic: {{ chi2_stat }}</p>
+        <p>p-value: {{ p_value }}</p>
+        <p>{% if p_value < 0.05 %} There is a significant difference between the variables. {% else %} There is no significant association between the variables. {% endif %}</p>
+    </div>
+    <div class="explanation">
+        <h2>What is the Chi-square Test?</h2>
+        <p>
+            The Chi-square test is a statistical method used to determine if there is a significant difference between categorical variables. It compares the observed frequencies in each category to the frequencies expected if there were no association between the variables.
+        </p>
+        <p>
+            A low p-value (typically < 0.05) indicates that the observed association is statistically significant, meaning it is unlikely to have occurred by chance. This test is widely used in research to test hypotheses about the relationships between categorical data.
+        </p>
+    </div>
+</body>
+</html>
